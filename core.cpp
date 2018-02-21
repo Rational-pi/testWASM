@@ -39,7 +39,7 @@ int main()
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_CreateWindowAndRenderer(255, 255, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(800, 600, 0, &window, &renderer);
 
     context ctx;
     ctx.renderer = renderer;
