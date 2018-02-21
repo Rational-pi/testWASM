@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <emscripten.h>
 #include <cstdlib>
-
+#include <iostream>
 
 struct context
 {
@@ -11,6 +11,9 @@ struct context
 
 void mainloop(void *arg)
 {
+    SDL_Event ev;
+    SDL_WaitEvent(&ev);
+    std::cout << ev.cdevice.timestamp << std::endl;
     context *ctx = static_cast<context*>(arg);
     SDL_Renderer *renderer = ctx->renderer;
     
