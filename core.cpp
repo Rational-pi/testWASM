@@ -2,6 +2,7 @@
 #include <emscripten.h>
 #include <cstdlib>
 
+
 struct context
 {
     SDL_Renderer *renderer;
