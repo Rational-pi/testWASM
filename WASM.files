@@ -1,1 +1,10 @@
+Makefile
+index.html
 naked_owl.c
+naked_owl.data
+naked_owl.js
+naked_owl.js.mem
+WASM.config
+WASM.creator
+WASM.files
+WASM.includes
