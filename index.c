@@ -4,14 +4,9 @@
 #include <SDL/SDL_ttf.h>
 #include <emscripten.h>
 
-/**
- * Inverse square root of two, for normalising velocity
- */
+
 #define REC_SQRT2 0.7071067811865475 
 
-/**
- * Set of input states
- */
 enum input_state
 {
     NOTHING_PRESSED = 0,
@@ -21,38 +16,23 @@ enum input_state
     RIGHT_PRESSED = 1<<3
 };
 
-/**
- * Context structure that will be passed to the loop handler
- */
 struct context
 {
     SDL_Renderer *renderer;
 
-    /**
-     * Rectangle that the owl texture will be rendered into
-     */
     SDL_Rect dest;
     SDL_Texture *owl_tex;
 
-    /**
-     * Font that is used for rendering text, and
-     * a texture the text is rendered into
-     */
     TTF_Font *font;
     SDL_Texture *text_tex;
 
     enum input_state active_state;
 
-    /**
-     * x and y components of owl's velocity
-     */
     int owl_vx;
     int owl_vy;
 };
 
-/**
- * Loads the owl texture into the context
- */
+
 int get_owl_texture(struct context *ctx)
 {
   SDL_Surface *image = IMG_Load("assets/owl.png");
@@ -70,34 +50,20 @@ int get_owl_texture(struct context *ctx)
   return 1;
 }
 
-/**
- * Set the context's text texture to show the text 'text' 
- */
-void set_font_text(struct context *ctx, const char *text)
-{
+void set_font_text(struct context *ctx, const char *text){
 	SDL_Color fg = {0,0,0,255};
     SDL_Surface *text_surface = TTF_RenderText_Blended(ctx->font, text, fg);
     ctx->text_tex = SDL_CreateTextureFromSurface(ctx->renderer, text_surface);
     SDL_FreeSurface(text_surface);
 }
 
-/**
- * Load the font we're going to use and set the text to
- * be "Hello owl!"
- */
-int get_font_texture(struct context *ctx)
-{
+int get_font_texture(struct context *ctx){
     ctx->font = TTF_OpenFont("assets/FreeSans.ttf", 30);
     set_font_text(ctx, "Hello owl!");
     return 1;
 }
 
-/**
- * Processes the input events and sets the velocity
- * of the owl accordingly
- */
-void process_input(struct context *ctx)
-{
+void process_input(struct context *ctx){
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
@@ -150,13 +116,7 @@ void process_input(struct context *ctx)
     }
 }
 
-/**
- * Loop handler that gets called each animation frame,
- * process the input, update the position of the owl and 
- * then render the texture
- */
-void loop_handler(void *arg)
-{
+void loop_handler(void *arg){
     struct context *ctx = arg;
 
     int vx = 0;
@@ -177,8 +137,7 @@ void loop_handler(void *arg)
     SDL_RenderPresent(ctx->renderer);
 }
 
-void mainf()
-{
+void mainf(){
     SDL_Window *window;
     struct context ctx;
 
@@ -196,9 +155,5 @@ void mainf()
     ctx.owl_vx = 0;
     ctx.owl_vy = 0;
 
-    /**
-     * Schedule the main loop handler to get 
-     * called on each animation frame
-     */
     emscripten_set_main_loop_arg(loop_handler, &ctx, -1, 1);
 }
