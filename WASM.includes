@@ -6,4 +6,7 @@
  /mnt/HDD/C++/sandbox/emsdk-portable/emscripten/1.37.34/system/include/libc
  /mnt/HDD/C++/sandbox/emsdk-portable/emscripten/1.37.34/system/lib/libc/musl/arch/emscripten
  /mnt/HDD/C++/sandbox/emsdk-portable/emscripten/1.37.34/system/local/include
+ /home/lvl-z/.emscripten_cache/asmjs/ports-builds/zlib
+ /home/lvl-z/.emscripten_cache/asmjs/ports-builds/libpng
  /home/lvl-z/.emscripten_cache/asmjs/ports-builds/sdl2/include
+ /home/lvl-z/.emscripten_cache/asmjs/ports-builds/freetype/include
