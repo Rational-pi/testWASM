@@ -1,8 +1,8 @@
 #include <stdbool.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "SDL_opengl.h"
 
-#ifdef EMSCRIPTEN
+
 #include <math.h>
 void gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
@@ -13,7 +13,7 @@ void gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFa
     xmax = ymax * aspect;
     glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
 }
-#endif
+
 
 float width = 200, height = 200;
 float bpp = 0;
@@ -27,26 +27,27 @@ const float triangle[9] = {
 float rotate_degrees  = 90;
 float rotate_axis[3] = {0,1,0};
 
-SDL_Surface * screen = NULL;
+SDL_Window *windows = NULL;
 
 void setup()
 {
     SDL_Init( SDL_INIT_VIDEO );
-
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1 );
 
-    screen = SDL_SetVideoMode(
-        width, height, bpp,
-        SDL_ANYFORMAT | SDL_OPENGL );
+    windows = SDL_CreateWindow(
+                "An SDL2 window",                  // window title
+                SDL_WINDOWPOS_UNDEFINED,           // initial x position
+                SDL_WINDOWPOS_UNDEFINED,           // initial y position
+                width,                               // width, in pixels
+                height,                               // height, in pixels
+                SDL_WINDOW_OPENGL                  // flags - see below
+            );
 
     glViewport(0,0,width,height);
-
     glPolygonMode( GL_FRONT, GL_FILL );
     glPolygonMode( GL_BACK,  GL_LINE );
-
     glMatrixMode(GL_PROJECTION);
     gluPerspective(fovy,width/height,near,far);
-
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -89,20 +90,14 @@ void render()
     }
     glEnd();
 
-    SDL_GL_SwapBuffers();
+    SDL_GL_SwapWindow(windows);
 }
 
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 
+#include <emscripten.h>
 int main()
 {
     setup();
-#ifdef EMSCRIPTEN
     emscripten_set_main_loop(render,60,true);
-#else
-    while (true)
-        render();
-#endif
+
 }
